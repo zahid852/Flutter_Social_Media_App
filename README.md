@@ -1,16 +1,14 @@
-# social_media_app
+# Random
 
-A new Flutter project.
+Random is a real-time social media application built using Flutter with Firebase Firestore Database.
 
-## Getting Started
+## Features
+1)Login/Signup using Email (Firebase Authentication) with email verification and forget passwords screens as well.
+2)Posts sharing with others(realtime). 
+3)Likes and Comments
+4)Delete post
+5)Search users and follow
+6)Profile screen
+7)Push notification(trigger when someone comments on one's post and follow) 
+8)Light & Dark mode
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
