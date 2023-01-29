@@ -2,8 +2,6 @@
 
 Random is a real-time social media application built using Flutter with Firebase Firestore Database.
 
-
-
 ## Features
 - Login/Signup using Email (Firebase Authentication) with email verification and forget passwords screens.
 - Posts sharing with others(realtime). 
