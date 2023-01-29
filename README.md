@@ -1,6 +1,6 @@
 # Random
 
-Random is a real-time social media application where user can post image/videos with caption and place, built using Flutter with Firebase Firestore Database.
+Random is a real-time social media application where user can post image/videos alongwith with caption and place, built using Flutter with Firebase Firestore Database.
 
 ## Features
 - Splash screen 
