@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:social_media_app/Models/user.dart';
+import 'package:social_media_app/Models/profile.dart';
 import 'package:social_media_app/Utils/const.dart';
 
 class authViewModel {
@@ -12,19 +12,23 @@ class authViewModel {
     bool isUserRegister = false;
     try {
       final UsernameApplicableQuery = await FirebaseFirestore.instance
-          .collection('users')
-          .where('username', isEqualTo: username.toLowerCase())
+          .collection('profiles')
+          .where('usernameForQuery', isEqualTo: username.toLowerCase())
           .get();
       if (UsernameApplicableQuery.docs.isEmpty) {
         final UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
         await FirebaseFirestore.instance
-            .collection('users')
+            .collection('profiles')
             .doc(userCredential.user!.uid)
-            .set(UserModel(
+            .set(ProfileModel(
                     username: username,
+                    usernameForQuery: username.toLowerCase(),
                     email: email,
-                    usernameForQuery: username.toLowerCase())
+                    name: Empty,
+                    about: Empty,
+                    date: Empty,
+                    imageUrl: Empty)
                 .toMap());
         isUserRegister = UserCredential != null;
       } else {

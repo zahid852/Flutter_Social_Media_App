@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.social_media_app">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="social_media_app"
         android:name="${applicationName}"
@@ -8,6 +12,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
@@ -20,6 +25,17 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <meta-data
+  android:name="com.google.firebase.messaging.default_notification_channel_id"
+  android:value="social_media_app" />  
+  <intent-filter>
+  <action android:name="NOTIFICATION_CLICK"/>
+        <action android:name="com.google.category.DEFAULT" />
+    </intent-filter>
+    <intent-filter>
+  
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+    </intent-filter>  
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

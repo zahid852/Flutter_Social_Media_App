@@ -1,13 +1,13 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:social_media_app/Models/profile.dart';
+import 'package:social_media_app/Screens/profile/profile_Setup/profile_model_view_state.dart';
 import 'package:social_media_app/Utils/const.dart';
 import 'package:uuid/uuid.dart';
 
-class ProfileViewModel {
+class ProfileSetupViewModel {
   String message = Empty;
 
   Future<String> uploadFile(File imageFile) async {
@@ -35,14 +35,14 @@ class ProfileViewModel {
       required String date,
       required String imageUrl}) async {
     bool isSaved = false;
-    final profileSetup =
-        ProfileModel(name: name, about: about, date: date, imageUrl: imageUrl);
+    final profileSetup = profileModelViewState(
+        name: name, about: about, date: date, imageUrl: imageUrl);
     try {
       final userId = FirebaseAuth.instance.currentUser!.uid;
       await FirebaseFirestore.instance
           .collection('profiles')
           .doc(userId)
-          .set(profileSetup.toMap());
+          .set(profileSetup.toMap(), SetOptions(merge: true));
 
       isSaved = true;
     } on FirebaseException catch (error) {

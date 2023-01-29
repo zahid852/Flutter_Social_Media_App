@@ -4,9 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:social_media_app/Resources/color_manager.dart';
 import 'package:social_media_app/Resources/routes_manager.dart';
 import 'package:social_media_app/Screens/auth/view_models/auth_view_model.dart';
+import 'package:social_media_app/Theme/theme_provider.dart';
 import 'package:social_media_app/Utils/const.dart';
 import 'package:social_media_app/Utils/utils.dart';
 
@@ -58,129 +60,132 @@ class _emailVerificationPageState extends State<emailVerificationPage> {
     await FirebaseAuth.instance.currentUser!.reload();
     if (FirebaseAuth.instance.currentUser!.emailVerified) {
       timer!.cancel();
-      Navigator.of(context).pushReplacementNamed(routes.profileRoute);
+      Navigator.of(context).pushReplacementNamed(routes.profileRoute,
+          arguments: [profileSetup.Auth.toString()]);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            height: getHeight(context: context),
-            width: getWidth(context: context),
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-              ColorManager.primeryDark,
-              ColorManager.primeryLight
-            ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
-          ),
-          Positioned(
-              top: 0,
-              child: SizedBox(
-                height: getHeight(context: context) * 0.2,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      top: getHeight(context: context) * 0.1, left: 30),
-                  child: Text(
-                    'Verify your email',
-                    style: GoogleFonts.nunito(
-                        color: ColorManager.white,
-                        fontSize: 26,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              )),
-          Positioned(
-            bottom: 0,
-            child: Container(
-              height: getHeight(context: context) * 0.8,
+      body: Consumer<ThemeProvider>(builder: (ctx, provider, _) {
+        return Stack(
+          children: [
+            Container(
+              height: getHeight(context: context),
               width: getWidth(context: context),
               decoration: BoxDecoration(
-                  color: ColorManager.white,
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(70),
-                      topRight: Radius.circular(70))),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: getWidth(context: context) * 0.75,
-                          child: Text(
-                              _isSendVerificationEmailDone
-                                  ? 'Please check your email and follow the instructions to complete your verification step'
-                                  : 'Please confirm that you entered correct email address by clicking on verify button',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.nunito(
-                                  color: ColorManager.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        if (!_isSendVerificationEmailDone)
-                          _isLoading
-                              ? const SizedBox(
-                                  height: 55,
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                )
-                              : SizedBox(
-                                  height: 55,
-                                  width: getWidth(context: context) * 0.55,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        elevation: 3,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        )),
-                                    onPressed: () {
-                                      _verifyEmail();
-                                    },
-                                    child: Text(
-                                      'Verify',
-                                      style: GoogleFonts.nunito(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  )),
-                      ],
+                  gradient: LinearGradient(colors: [
+                ColorManager.primeryDark,
+                ColorManager.primeryLight
+              ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
+            ),
+            Positioned(
+                top: 0,
+                child: SizedBox(
+                  height: getHeight(context: context) * 0.2,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: getHeight(context: context) * 0.1, left: 30),
+                    child: Text(
+                      'Verify your email',
+                      style: GoogleFonts.nunito(
+                          color: ColorManager.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w500),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(routes.loginRoute);
-                    },
-                    child: Container(
-                      width: getWidth(context: context),
-                      color: ColorManager.primeryColor,
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Center(
-                        child: Text('Invalid Email? Use another Email',
-                            style: GoogleFonts.nunito(
-                              color: ColorManager.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            )),
+                )),
+            Positioned(
+              bottom: 0,
+              child: Container(
+                height: getHeight(context: context) * 0.8,
+                width: getWidth(context: context),
+                decoration: BoxDecoration(
+                    color: provider.IsThemeStatusBlack
+                        ? Colors.black
+                        : ColorManager.white,
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(70),
+                        topRight: Radius.circular(70))),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: getWidth(context: context) * 0.75,
+                            child: Text(
+                                _isSendVerificationEmailDone
+                                    ? 'Please check your email and follow the instructions to complete your verification step'
+                                    : 'Please confirm that you entered correct email address by clicking on verify button',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.nunito(
+                                    fontSize: 16, fontWeight: FontWeight.w400)),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          if (!_isSendVerificationEmailDone)
+                            _isLoading
+                                ? const SizedBox(
+                                    height: 55,
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  )
+                                : SizedBox(
+                                    height: 55,
+                                    width: getWidth(context: context) * 0.55,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 3,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          )),
+                                      onPressed: () {
+                                        _verifyEmail();
+                                      },
+                                      child: Text(
+                                        'Verify',
+                                        style: GoogleFonts.nunito(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    )),
+                        ],
                       ),
                     ),
-                  )
-                ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushReplacementNamed(routes.loginRoute);
+                      },
+                      child: Container(
+                        width: getWidth(context: context),
+                        color: ColorManager.primeryColor,
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        child: Center(
+                          child: Text('Invalid Email? Use another Email',
+                              style: GoogleFonts.nunito(
+                                color: ColorManager.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              )),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
 }
